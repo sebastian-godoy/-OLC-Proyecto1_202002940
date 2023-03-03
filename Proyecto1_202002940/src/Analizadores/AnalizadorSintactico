@@ -1,9 +1,10 @@
 package Analizadores;
 import java_cup.runtime.*;
+import java.util.ArrayList;
 
 parser code
 {:
-    
+    public ArrayList<Nodo_binario> arboles = new ArrayList<Nodo_binario>();
 :}
 terminal String llaveA,
 llaveC, 
@@ -38,15 +39,52 @@ start with programa;
 programa ::= llaveA segmentoA_varios porcentaje porcentaje segmentoB_varios llaveC;
 segmentoA_varios::= segmentoA_varios segmentoA | segmentoA;
 segmentoA::= CONJ dbPto ID flecha notacion ptoComa|CONJ dbPto ID flecha notacionA ptoComa|
-ID flecha exReg ptoComa ;
+ID flecha exReg:a ptoComa {:
+arboles.add((Nodo_binario) a);
+:};
 
 notacion::= minus virgulilla minus |mayus virgulilla mayus
 |nums virgulilla nums | signos virgulilla signos;
 notacionA::=notacionA coma notacionB | notacionB;
 notacionB::=signos|nums|minus|mayus;
-exReg::= concatenacion exReg exReg |
-disyuncion exReg exReg |estrella exReg|cerrPositiva exReg|
-cerrBooleana exReg|caracter|llaveA ID llaveC;
+
+
+
+exReg::= concatenacion:a exReg:b exReg:c{: 
+Nodo_binario padre = new Nodo_binario(a);
+padre.hijo_izq = (Nodo_binario) b;
+padre.hijo_der = (Nodo_binario) c;
+RESULT = padre;
+:}  
+|disyuncion:a exReg:b exReg:c {: 
+Nodo_binario padre = new Nodo_binario(a);
+padre.hijo_izq = (Nodo_binario) b;
+padre.hijo_der = (Nodo_binario) c;
+RESULT = padre;
+:} 
+|estrella:a exReg:b{: 
+Nodo_binario padre = new Nodo_binario(a);
+padre.hijo_der = (Nodo_binario) b;
+RESULT = padre;
+:}
+|cerrPositiva:a exReg:b{: 
+Nodo_binario padre = new Nodo_binario(a);
+padre.hijo_der = (Nodo_binario) b;
+RESULT = padre;
+:}
+|cerrBooleana:a exReg:b {: 
+Nodo_binario padre = new Nodo_binario(a);
+padre.hijo_der = (Nodo_binario) b;
+RESULT = padre;
+:}
+|caracter:a {: 
+Nodo_binario hoja = new Nodo_binario(a);
+RESULT = hoja;
+:}
+|llaveA ID:a llaveC {: 
+Nodo_binario hoja = new Nodo_binario(a);
+RESULT = hoja;
+:};
 
 segmentoB_varios::=segmentoB_varios segmentoB | segmentoB;
 segmentoB::= ID dbPto cadena ptoComa;
