@@ -5,9 +5,49 @@ parser code
 {:
     
 :}
+terminal String llaveA,
+llaveC, 
+CONJ,
+dbPto,
+ID,
+flecha,
+ptoComa,
+minus,
+mayus,
+nums,
+porcentaje,
+signos,
+virgulilla,
+coma,
+concatenacion,
+disyuncion,
+estrella,
+cerrPositiva,
+cerrBooleana,
+caracter,
+cadena;
 
 non terminal programa;
+non terminal segmentoA, segmentoB, segmentoA_varios, segmentoB_varios, notacion,
+notacionA, notacionB, exReg;
+
+
 
 start with programa;
 
-programa ::= ;
+programa ::= llaveA segmentoA_varios porcentaje porcentaje segmentoB_varios llaveC;
+segmentoA_varios::= segmentoA_varios segmentoA | segmentoA;
+segmentoA::= CONJ dbPto ID flecha notacion ptoComa|CONJ dbPto ID flecha notacionA ptoComa|
+ID flecha exReg ptoComa ;
+
+notacion::= minus virgulilla minus |mayus virgulilla mayus
+|nums virgulilla nums | signos virgulilla signos;
+notacionA::=notacionA coma notacionB | notacionB;
+notacionB::=signos|nums|minus|mayus;
+exReg::= concatenacion exReg exReg |
+disyuncion exReg exReg |estrella exReg|cerrPositiva exReg|
+cerrBooleana exReg|caracter|llaveA ID llaveC;
+
+segmentoB_varios::=segmentoB_varios segmentoB | segmentoB;
+segmentoB::= ID dbPto cadena ptoComa;
+

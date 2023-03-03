@@ -29,6 +29,7 @@ ptoComa=";"
 minus=[a-z]
 mayus=[A-Z]
 nums=[0-9]
+porcentaje="%"
 signos=[\ -/:-@\[-`{-}]
 virgulilla="~"
 coma=","
@@ -38,34 +39,36 @@ estrella="*"
 cerrPositiva="+"
 cerrBooleana="?"
 caracter="\""({minus}|{mayus}|{nums}|{signos})"\""
-cadena="\""({minus}|{mayus}|{nums}|{signos})+"\""
+input=[^\"\n\r]
+cadena="\""({input})+"\""
 espacioBlanco=[\ \r\t]+
 finDeLinea=[\r\n]
 %%
-<YYINITIAL> {espacioBlanco} { System.out.println(yytext());}
-<YYINITIAL> {finDeLinea} { System.out.println(yytext());}
+<YYINITIAL> {espacioBlanco} {}
+<YYINITIAL> {finDeLinea} {}
 <YYINITIAL> {comment} { System.out.println(yytext());}
 <YYINITIAL> {lnComment} { System.out.println(yytext());}
-<YYINITIAL> {CONJ} { System.out.println(yytext());}
-<YYINITIAL> {concatenacion} { System.out.println(yytext());}
-<YYINITIAL> {disyuncion} { System.out.println(yytext());}
-<YYINITIAL> {estrella} { System.out.println(yytext());}
-<YYINITIAL> {cerrPositiva} { System.out.println(yytext());}
-<YYINITIAL> {cerrBooleana} { System.out.println(yytext());}
-<YYINITIAL> {llaveA} { System.out.println(yytext());}
-<YYINITIAL> {llaveC} { System.out.println(yytext());}
-<YYINITIAL> {dbPto} { System.out.println(yytext());}
-<YYINITIAL> {ID} { System.out.println(yytext());}
-<YYINITIAL> {flecha} { System.out.println(yytext());}
-<YYINITIAL> {ptoComa} { System.out.println(yytext());}
-<YYINITIAL> {minus} { System.out.println(yytext());}
-<YYINITIAL> {mayus} { System.out.println(yytext());}
-<YYINITIAL> {nums} { System.out.println(yytext());}
-<YYINITIAL> {virgulilla} { System.out.println(yytext());}
-<YYINITIAL> {coma} { System.out.println(yytext());}
-<YYINITIAL> {caracter} { System.out.println(yytext());}
-<YYINITIAL> {cadena} { System.out.println(yytext());}
-<YYINITIAL> {signos} { System.out.println(yytext());}
+<YYINITIAL> {CONJ} { System.out.println("CONJ " + yytext());return new Symbol(sym.CONJ, yyline, yycolumn, yytext());}
+<YYINITIAL> {concatenacion} { System.out.println("Concatenacion " + yytext());return new Symbol(sym.concatenacion, yyline, yycolumn, yytext());}
+<YYINITIAL> {disyuncion} { System.out.println("Disyuncion " + yytext());return new Symbol(sym.disyuncion, yyline, yycolumn, yytext());}
+<YYINITIAL> {estrella} { System.out.println("Estrella " + yytext());return new Symbol(sym.estrella, yyline, yycolumn, yytext());}
+<YYINITIAL> {cerrPositiva} { System.out.println("cerrPositiva " + yytext());return new Symbol(sym.cerrPositiva, yyline, yycolumn, yytext());}
+<YYINITIAL> {cerrBooleana} { System.out.println("cerrBooleana " + yytext());return new Symbol(sym.cerrBooleana, yyline, yycolumn, yytext());}
+<YYINITIAL> {llaveA} { System.out.println("llaveA " + yytext());return new Symbol(sym.llaveA, yyline, yycolumn, yytext());}
+<YYINITIAL> {llaveC} { System.out.println("llaveC " + yytext());return new Symbol(sym.llaveC, yyline, yycolumn, yytext());}
+<YYINITIAL> {dbPto} { System.out.println("dbPto " + yytext());return new Symbol(sym.dbPto, yyline, yycolumn, yytext());}
+<YYINITIAL> {ID} { System.out.println("ID " + yytext());return new Symbol(sym.ID, yyline, yycolumn, yytext());}
+<YYINITIAL> {flecha} { System.out.println("Flecha " + yytext());return new Symbol(sym.flecha, yyline, yycolumn, yytext());}
+<YYINITIAL> {ptoComa} { System.out.println("ptoComa " + yytext());return new Symbol(sym.ptoComa, yyline, yycolumn, yytext());}
+<YYINITIAL> {minus} { System.out.println("minus " + yytext());return new Symbol(sym.minus, yyline, yycolumn, yytext());}
+<YYINITIAL> {mayus} { System.out.println("mayus " + yytext());return new Symbol(sym.mayus, yyline, yycolumn, yytext());}
+<YYINITIAL> {nums} { System.out.println("nums " + yytext());return new Symbol(sym.nums, yyline, yycolumn, yytext());}
+<YYINITIAL> {virgulilla} { System.out.println("Virgulilla " + yytext());return new Symbol(sym.virgulilla, yyline, yycolumn, yytext());}
+<YYINITIAL> {coma} { System.out.println("coma " + yytext());return new Symbol(sym.coma, yyline, yycolumn, yytext());}
+<YYINITIAL> {caracter} { System.out.println("caracter " + yytext());return new Symbol(sym.caracter, yyline, yycolumn, yytext());}
+<YYINITIAL> {cadena} { System.out.println("cadena " + yytext());return new Symbol(sym.cadena, yyline, yycolumn, yytext());}
+<YYINITIAL> {porcentaje} { System.out.println("porcentaje " + yytext());return new Symbol(sym.porcentaje, yyline, yycolumn, yytext());}
+<YYINITIAL> {signos} { System.out.println("Signos " + yytext());return new Symbol(sym.signos, yyline, yycolumn, yytext());}
 
 
 
