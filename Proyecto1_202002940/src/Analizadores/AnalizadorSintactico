@@ -1,0 +1,13 @@
+package Analizadores;
+import java_cup.runtime.*;
+
+parser code
+{:
+    
+:}
+
+non terminal programa;
+
+start with programa;
+
+programa ::= ;

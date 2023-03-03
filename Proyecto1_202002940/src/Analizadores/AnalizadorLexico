@@ -1,0 +1,75 @@
+package Analizadores;
+
+import java_cup.runtime.Symbol;
+
+%%
+%class AnalizaLex
+%cup
+%public
+%line
+%column
+%full
+%char
+%unicode
+
+%init{
+    yyline = 0;
+    yychar = 0;
+%init}
+
+comment="<!" (.|[^.])+ "!>"
+lnComment = "//" .+
+llaveA="{"
+llaveC="}"
+CONJ="CONJ"
+dbPto=":"
+ID=[a-zA-Z_][0-9a-zA-Z_]+
+flecha="->"
+ptoComa=";"
+minus=[a-z]
+mayus=[A-Z]
+nums=[0-9]
+signos=[\ -/:-@\[-`{-}]
+virgulilla="~"
+coma=","
+concatenacion="."
+disyuncion="|"
+estrella="*"
+cerrPositiva="+"
+cerrBooleana="?"
+caracter="\""({minus}|{mayus}|{nums}|{signos})"\""
+cadena="\""({minus}|{mayus}|{nums}|{signos})+"\""
+espacioBlanco=[\ \r\t]+
+finDeLinea=[\r\n]
+%%
+<YYINITIAL> {espacioBlanco} { System.out.println(yytext());}
+<YYINITIAL> {finDeLinea} { System.out.println(yytext());}
+<YYINITIAL> {comment} { System.out.println(yytext());}
+<YYINITIAL> {lnComment} { System.out.println(yytext());}
+<YYINITIAL> {CONJ} { System.out.println(yytext());}
+<YYINITIAL> {concatenacion} { System.out.println(yytext());}
+<YYINITIAL> {disyuncion} { System.out.println(yytext());}
+<YYINITIAL> {estrella} { System.out.println(yytext());}
+<YYINITIAL> {cerrPositiva} { System.out.println(yytext());}
+<YYINITIAL> {cerrBooleana} { System.out.println(yytext());}
+<YYINITIAL> {llaveA} { System.out.println(yytext());}
+<YYINITIAL> {llaveC} { System.out.println(yytext());}
+<YYINITIAL> {dbPto} { System.out.println(yytext());}
+<YYINITIAL> {ID} { System.out.println(yytext());}
+<YYINITIAL> {flecha} { System.out.println(yytext());}
+<YYINITIAL> {ptoComa} { System.out.println(yytext());}
+<YYINITIAL> {minus} { System.out.println(yytext());}
+<YYINITIAL> {mayus} { System.out.println(yytext());}
+<YYINITIAL> {nums} { System.out.println(yytext());}
+<YYINITIAL> {virgulilla} { System.out.println(yytext());}
+<YYINITIAL> {coma} { System.out.println(yytext());}
+<YYINITIAL> {caracter} { System.out.println(yytext());}
+<YYINITIAL> {cadena} { System.out.println(yytext());}
+<YYINITIAL> {signos} { System.out.println(yytext());}
+
+
+
+
+
+
+ 
