@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 parser code
 {:
-    public ArrayList<Nodo_binario> arboles = new ArrayList<Nodo_binario>();
+    //public ArrayList<Automata> arboles = new ArrayList<Automata>();
+    //public void syntax_error(Symbol s) {
+            //System.out.println("Error sintactico: +"s.value", Linea " +(s.left+1)" + (s.right+1));
+    //}
+    
 :}
 terminal String llaveA,
 llaveC, 
@@ -36,11 +40,11 @@ notacionA, notacionB, exReg;
 
 start with programa;
 
-programa ::= llaveA segmentoA_varios porcentaje porcentaje segmentoB_varios llaveC;
+programa ::= llaveA segmentoA_varios porcentaje porcentaje porcentaje porcentaje segmentoB_varios llaveC;
 segmentoA_varios::= segmentoA_varios segmentoA | segmentoA;
 segmentoA::= CONJ dbPto ID flecha notacion ptoComa|CONJ dbPto ID flecha notacionA ptoComa|
 ID flecha exReg:a ptoComa {:
-arboles.add((Nodo_binario) a);
+//arboles.add((Nodo_binario) a);
 :};
 
 notacion::= minus virgulilla minus |mayus virgulilla mayus
