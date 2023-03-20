@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 parser code
 {:
-    //public ArrayList<Automata> arboles = new ArrayList<Automata>();
-    //public void syntax_error(Symbol s) {
-            //System.out.println("Error sintactico: +"s.value", Linea " +(s.left+1)" + (s.right+1));
-    //}
-    
+    public ArrayList<Automata> arboles = new ArrayList<>();
+    public void syntax_error(Symbol s) {
+            System.out.println("Error sintactico: "+s.value+", Linea " +(s.left+1)+" Columna " + (s.right+1));
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.out.println("Error sintactico NR: "+s.value+", Linea "+(s.left+1)+" Columna "+(s.right+1));
+    }    
 :}
 terminal String llaveA,
 llaveC, 
@@ -44,14 +47,13 @@ programa ::= llaveA segmentoA_varios porcentaje porcentaje porcentaje porcentaje
 segmentoA_varios::= segmentoA_varios segmentoA | segmentoA;
 segmentoA::= CONJ dbPto ID flecha notacion ptoComa|CONJ dbPto ID flecha notacionA ptoComa|
 ID flecha exReg:a ptoComa {:
-//arboles.add((Nodo_binario) a);
+    arboles.add(new Automata((Nodo_binario) a));
 :};
 
 notacion::= minus virgulilla minus |mayus virgulilla mayus
 |nums virgulilla nums | signos virgulilla signos;
 notacionA::=notacionA coma notacionB | notacionB;
 notacionB::=signos|nums|minus|mayus;
-
 
 
 exReg::= concatenacion:a exReg:b exReg:c{: 
@@ -83,10 +85,17 @@ RESULT = padre;
 :}
 |caracter:a {: 
 Nodo_binario hoja = new Nodo_binario(a);
+// Es una hoja ----------------------------------------
+hoja.setHoja(true);
+// No es anulable el nodo
+hoja.setAnulable(false);
 RESULT = hoja;
 :}
 |llaveA ID:a llaveC {: 
 Nodo_binario hoja = new Nodo_binario(a);
+// Es una hoja ----------------------------------------
+hoja.setHoja(true);
+hoja.setAnulable(false);
 RESULT = hoja;
 :};
 

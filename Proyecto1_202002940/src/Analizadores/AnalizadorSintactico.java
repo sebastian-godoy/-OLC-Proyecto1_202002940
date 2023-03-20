@@ -169,11 +169,14 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
 
 
 
-    //public ArrayList<Automata> arboles = new ArrayList<Automata>();
-    //public void syntax_error(Symbol s) {
-            //System.out.println("Error sintactico: +"s.value", Linea " +(s.left+1)" + (s.right+1));
-    //}
-    
+    public ArrayList<Automata> arboles = new ArrayList<>();
+    public void syntax_error(Symbol s) {
+            System.out.println("Error sintactico: "+s.value+", Linea " +(s.left+1)+" Columna " + (s.right+1));
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.out.println("Error sintactico NR: "+s.value+", Linea "+(s.left+1)+" Columna "+(s.right+1));
+    }    
 
 
 /** Cup generated class to encapsulate user supplied action code.*/
@@ -267,7 +270,7 @@ class CUP$AnalizadorSintactico$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).right;
 		Object a = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).value;
 		
-//arboles.add((Nodo_binario) a);
+    arboles.add(new Automata((Nodo_binario) a));
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("segmentoA",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-3)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -475,6 +478,10 @@ RESULT = padre;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		 
 Nodo_binario hoja = new Nodo_binario(a);
+// Es una hoja ----------------------------------------
+hoja.setHoja(true);
+// No es anulable el nodo
+hoja.setAnulable(false);
 RESULT = hoja;
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("exReg",8, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -490,6 +497,9 @@ RESULT = hoja;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).value;
 		 
 Nodo_binario hoja = new Nodo_binario(a);
+// Es una hoja ----------------------------------------
+hoja.setHoja(true);
+hoja.setAnulable(false);
 RESULT = hoja;
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("exReg",8, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

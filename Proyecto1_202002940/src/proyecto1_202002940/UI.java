@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -218,20 +220,17 @@ File file_current = null;
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String codigo = txta_editor.getText();
-        try {
-            AnalizaLex scanner = new AnalizaLex(new java.io.StringReader(codigo));
-            AnalizadorSintactico analizador = new AnalizadorSintactico(scanner);
-            analizador.parse();
-            /*for(AFD afd: analizador.automatas){
-                System.out.println(afd.graficar_arbol(afd.getArbol_expresion(),0));
-                System.out.println("---------- grafo de thompson ----------");
-                System.out.println("N_1[label = \"\"];\nN_2[label = \"\" shape=doublecircle];\n"+afd.graficar_thompson(1,2,afd.getArbol_expresion()));
-            } 
-            */
-            System.out.println("Analisis finalizado");
-        }catch(Exception e){
-            
-        }
+        
+        AnalizaLex scanner = new AnalizaLex(new java.io.StringReader(codigo));
+        AnalizadorSintactico analizador = new AnalizadorSintactico(scanner);
+    try {
+        analizador.parse();
+    } catch (Exception ex) {
+        Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+        System.out.println("Analisis finalizado");
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
