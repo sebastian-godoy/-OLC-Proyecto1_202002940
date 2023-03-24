@@ -95,6 +95,11 @@ public class Nodo_binario {
         this.ultimos = ultimos;
     }
     
+  
+        
+    }
+    
+    
     
 
     
@@ -105,4 +110,4 @@ public class Nodo_binario {
     
     
 
-}
+
