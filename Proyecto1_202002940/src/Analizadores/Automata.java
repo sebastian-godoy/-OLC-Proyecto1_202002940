@@ -4,6 +4,7 @@
  */
 package Analizadores;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public class Automata {
     private final ArrayList<followposTabla> siguientes = new ArrayList<>();
     private final ArrayList<String> terminales = new ArrayList<>(); 
     private final ArrayList<ArrayList> transiciones = new ArrayList<>();
+    private final ArrayList<ArrayList> tablaTransiciones = new ArrayList<>();
     
     
     
@@ -58,8 +60,24 @@ public class Automata {
         
         calcular_transiciones();
         System.out.println("digraph{\n"+graficar_tabla_siguientes()+"\n}");
+        generarDot();
         
         
+        
+    }
+    
+    public void generarDot() {
+        //int contador = 0;
+        String filenameArbol = "Arbol";
+        String filenameTablaSiguientes = "TablaSiguientes";
+        String dotArbol = "digraph{\n" + graficar_arbol(this.arbol_de_expresion,num_nodo) + "\n}";
+        String dotSiguientes = "digraph{\n"+graficar_tabla_siguientes()+"\n}";
+        try {
+            DotToPngConverter.convertToPng("digraph{\n" + graficar_arbol(this.arbol_de_expresion,num_nodo) + "\n}", filenameArbol);
+            DotToPngConverter.convertToPng("digraph{\n"+graficar_tabla_siguientes()+"\n}", filenameTablaSiguientes);
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error al generar el archivo de graphviz");
+        }
         
     }
     
@@ -76,15 +94,18 @@ public class Automata {
         if (nodo.isHoja()) {
             //s+= "digraph{\n";
             s+= "n_" + num_nodo + "[label=<";
-            s+= "<TABLE border=\"1\" cellspacing=\"2\" cellpading=\"10\" >\n"
+            s+= "<TABLE border=\"1\" cellspacing=\"2\" cellpading=\"9\" >\n"
+                    +"<TR>\n";
+                    if (nodo.isAnulable()) {
+                        s+="<TD colspan=\"3\">"+"Anulable"+"</TD>\n";
+                    }
+                    else {
+                        s+="<TD colspan=\"3\">"+"No es anulable"+"</TD>\n";
+                    }
+                    
+                    s+="</TR>\n"
                     +"<TR>\n"
-                    // aca poner un if para ver si es falso o true
-                    +"<TD colspan=\"3\">"+nodo.isAnulable()+"</TD>\n"
-                    +"</TR>\n"
-                    +"<TR>\n"
-                    +"<TD>"+nodo.getPrimeros()+"</TD>\n"
-                    +"<TD>"+nodo.getDato()+"</TD>\n"
-                    +"<TD>"+nodo.getUltimos()+"</TD>\n"
+                    +"<TD>"+nodo.getPrimeros()+"    "+nodo.getDato()+"    " +nodo.getUltimos()+"</TD>\n"
                     +"</TR>\n"
                     +"<TR>\n"
                     +"<TD colspan=\"3\">"+nodo.getIdentificador()+"</TD>\n" 
@@ -94,14 +115,18 @@ public class Automata {
       
         } else {
             s+= "n_" + num_nodo + "[label=<";
-            s+= "<TABLE border=\"1\" cellspacing=\"2\" cellpading=\"10\" >\n"
+            s+= "<TABLE border=\"1\" cellspacing=\"2\" cellpading=\"9\" >\n"
+                    +"<TR>\n";
+                    if (nodo.isAnulable()) {
+                        s+="<TD colspan=\"3\">"+"Anulable"+"</TD>\n";
+                    }
+                    else {
+                        s+="<TD colspan=\"3\">"+"No es anulable"+"</TD>\n";
+                    }
+                    //+"<TD colspan=\"3\">"+nodo.isAnulable()+"</TD>\n"
+                    s+="</TR>\n"
                     +"<TR>\n"
-                    +"<TD colspan=\"3\">"+nodo.isAnulable()+"</TD>\n"
-                    +"</TR>\n"
-                    +"<TR>\n"
-                    +"<TD>"+nodo.getPrimeros()+"</TD>\n"
-                    +"<TD>"+nodo.getDato()+"</TD>\n"
-                    +"<TD>"+nodo.getUltimos()+"</TD>\n"
+                    +"<TD>"+nodo.getPrimeros()+"    "+nodo.getDato()+"    " +nodo.getUltimos()+"</TD>\n"
                     +"</TR>\n"
                     +"<TR>\n"
                     +"<TD colspan=\"3\">"+nodo.getIdentificador()+"</TD>\n" 
@@ -238,13 +263,15 @@ public class Automata {
     }
     
     public void calcular_transiciones() {
-        int indice = 0;
+        int idx = 0;
         transiciones.add(new ArrayList<>());
         ArrayList fila = transiciones.get(0);
         fila.add(this.arbol_de_expresion.getPrimeros());
-        while (indice < transiciones.size()) {
+        while (idx < transiciones.size()) {
             //llenar con espacios vacios las columnas de la fila
-            fila = transiciones.get(indice);
+            fila = transiciones.get(idx);
+            
+            
             for (String s : terminales) {
                 fila.add(new ArrayList<>());
             }
@@ -254,8 +281,10 @@ public class Automata {
             for (int siguiente : (ArrayList<Integer>) fila.get(0)) {
                 String simbolo = siguientes.get(siguiente-1).getSimbolo();
                 if (simbolo.equals("#")) {
+                    // # Encontrado!
                     continue;
                 }
+                // --------------------------------------2----------------------------------
                 int columna = terminales.indexOf(simbolo) + 1;
                 ArrayList<Integer> col_terminal = (ArrayList<Integer>) fila.get(columna);
                 for (int i : siguientes.get(siguiente).getSiguientes()) {
@@ -264,6 +293,7 @@ public class Automata {
                     }
                 }
                 Collections.sort(col_terminal);
+                System.out.println("prueba123123----");
             }
             //Crear estados
             boolean encontrado;
@@ -277,15 +307,16 @@ public class Automata {
                         break;
                     }
                 }
-                //si no existe hacer un nuevo estado con los siguientes 
+                // New state con followPos
                 if (!encontrado && !estado.isEmpty()) {
                     ArrayList<ArrayList> nueva_fila = new ArrayList<>();
                     nueva_fila.add(estado);
                     transiciones.add(nueva_fila);
+                    System.out.println("si funciona!");
                 }
             }
-            //bajar una fila
-            indice++;
+
+            idx++;
         }
     }
     
@@ -307,6 +338,14 @@ public class Automata {
         }
         c+=" </TABLE>>";
         return c;      
+    }
+    
+    public void crear_tabla_transiciones() {
+        
+    }
+    
+    public void agregar_fila() {
+        //fila = {}
     }
     
     
