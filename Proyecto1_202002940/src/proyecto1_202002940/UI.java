@@ -14,14 +14,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-/**
- *
- */
 public class UI extends javax.swing.JFrame {
 File file_current = null;
-    /**
-     * Creates new form UI
-     */
+    
     public UI() {
         initComponents();
     }

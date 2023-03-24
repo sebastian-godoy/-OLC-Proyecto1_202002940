@@ -61,6 +61,12 @@ public class Automata {
         calcular_transiciones();
         System.out.println("digraph{\n"+graficar_tabla_siguientes()+"\n}");
         generarDot();
+        try{
+            System.out.println(calcular_tabla_transiciones());
+        } catch(Exception e) {
+            System.out.println("Error con la tabla de trans");
+        }
+        
         
         
         
@@ -340,13 +346,46 @@ public class Automata {
         return c;      
     }
     
-    public void crear_tabla_transiciones() {
+    public String calcular_tabla_transiciones() {
+        // Obtenemos el número de estados
+        int num_estados = this.siguientes.size();
         
+        // Creamos el encabezado de la tabla
+        String tabla = "digraph{\n" +
+                       "  rankdir=LR;\n" +
+                       "  node [shape=plaintext fontname=\"Courier\"];\n" +
+                       "  edge [arrowhead=vee fontname=\"Courier\"];\n" +
+                       "  T [label=<<TABLE BORDER=\"1\" CELLBORDER=\"0\" CELLSPACING=\"0\">\n" +
+                       "    <TR><TD>Estados</TD>";
+        for (String t: this.terminales) {
+            tabla += "<TD>" + t + "</TD>";
+        }
+        tabla += "</TR>\n";
+        
+        // Creamos las filas de la tabla
+        for (int i = 0; i < num_estados; i++) {
+            tabla += "    <TR><TD>" + i + "</TD>";
+            for (String t: this.terminales) {
+                int sig = obtener_siguiente(i, t);
+                tabla += "<TD>" + sig + "</TD>";
+            }
+            tabla += "</TR>\n";
+        }
+        
+        // Cerramos la tabla
+        tabla += "  </TABLE>>];\n" +
+                 "}";
+        
+        return tabla;
     }
     
-    public void agregar_fila() {
-        //fila = {}
+    public int obtener_siguiente(int estado, String entrada) {
+        ArrayList<Integer> trans = this.transiciones.get(estado);
+        int idx = this.terminales.indexOf(entrada);
+        return trans.get(idx);
     }
+    
+    
     
     
     
